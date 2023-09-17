@@ -37,6 +37,6 @@ int HashTable::StringHashTable::getAsciiSum(std::string str)
 {
 	int sum = 0;
 	for (char chr : str)
-		sum += (int)chr;
+		sum += static_cast<int>(chr);
 	return sum;
 }

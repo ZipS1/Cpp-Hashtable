@@ -3,40 +3,98 @@
 #include "hash-table.h"
 using namespace std;
 
+
 HashTable::StringHashTable::StringHashTable()
 {
-	table = new string[size];
+	table = new HashNode*[capacity];
 }
 
-bool HashTable::StringHashTable::insert(std::string key, std::string value)
+bool HashTable::StringHashTable::insert(HashNode node)
 {
 	return false;
 }
 
-bool HashTable::StringHashTable::remove(std::string key)
+bool HashTable::StringHashTable::remove(std::string const& key)
 {
 	return false;
 }
 
-std::string HashTable::StringHashTable::getValue(std::string key)
+bool HashTable::StringHashTable::exists(std::string const& key)
 {
-	return std::string();
+	size_t index = findIndex(key);
+	return table[index] != nullptr;
+}
+
+HashTable::HashNode HashTable::StringHashTable::getValue(std::string const& key)
+{
+	size_t index = findIndex(key);
+	if (table[index] == nullptr)
+		throw HashTable::KeyNotExistsException();
+
+	return *table[index];
 }
 
 HashTable::StringHashTable::~StringHashTable()
 {
-	delete table;
+	for (size_t i = 0; i < capacity; i++) {
+		if (table[i] != nullptr) {
+			delete table[i];
+		}
+	}
+	delete[] table;
 }
 
-int HashTable::StringHashTable::hash(std::string key)
+size_t HashTable::StringHashTable::findIndex(std::string const& key)
 {
-	return getAsciiSum(key) % size;
+	for (int i = 0; i < capacity; i++)
+	{
+		size_t hash = getHash(key, i);
+		if (isIndexEmpty(hash))
+			return hash;
+	}
+	throw HashTable::FreeIndexNotFoundException();
 }
 
-int HashTable::StringHashTable::getAsciiSum(std::string str)
+bool HashTable::StringHashTable::isIndexEmpty(size_t const index)
 {
-	int sum = 0;
+	return table[index] == nullptr;
+}
+
+size_t HashTable::StringHashTable::getHash(std::string const& key, size_t const& i)
+{
+	return (getAsciiSum(key) + c * i + d * i * i) % capacity;
+}
+
+size_t HashTable::StringHashTable::getAsciiSum(std::string str)
+{
+	size_t sum = 0;
 	for (char chr : str)
-		sum += static_cast<int>(chr);
+		sum += size_t(chr);
 	return sum;
+}
+
+bool HashTable::StringHashTable::checkRebuild()
+{
+	if ((float)size / capacity < rebuidlLoadFactor)
+		return false;
+
+	rehash();
+	return true;
+}
+
+void HashTable::StringHashTable::rehash()
+{
+	size_t oldCapacity = capacity;
+	HashNode** oldTable = table;
+	capacity *= 2;
+	size = 0;
+	table = new HashNode*[capacity];
+
+	for (size_t i = 0; i < oldCapacity; i++)
+	{
+		if (oldTable[i] != nullptr)
+		{
+			// TODO: implement me | ref https://codereview.stackexchange.com/questions/208857/rehashing-a-hash-table-in-c-with-quadratic-probing
+		}
+	}
 }

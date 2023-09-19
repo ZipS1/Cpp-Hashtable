@@ -9,12 +9,16 @@ HashTable::StringHashTable::StringHashTable()
 	table = new HashNode*[capacity];
 }
 
-bool HashTable::StringHashTable::insert(string const& phoneNumber, string const& address)
+bool HashTable::StringHashTable::insert(std::string const& phoneNumber, std::string const& address)
 {
-
-	size_t index = findEmptyIndex(phoneNumber);
-	HashNode* hashNode = new HashNode{ phoneNumber, address };
-	table[index] = hashNode;
+	IndexSearchResult searchResult = findEmptyIndex(phoneNumber);
+	if (searchResult.isFound)
+	{
+		HashNode* hashNode = new HashNode{ phoneNumber, address, NodeStatus::Filled };
+		table[searchResult.index] = hashNode;
+	}
+	else
+		throw EmptyIndexNotFoundException();
 
 	size++;
 	checkRebuild();
@@ -23,23 +27,29 @@ bool HashTable::StringHashTable::insert(string const& phoneNumber, string const&
 
 bool HashTable::StringHashTable::remove(std::string const& key)
 {
-	return false;
+	IndexSearchResult searchResult = findIndex(key);
+	if (searchResult.isFound)
+		table[searchResult.index]->status = NodeStatus::Deleted;
+	else
+		throw KeyNotExistsException();
+
+	size--;
+	return true;
 
 }
 
 bool HashTable::StringHashTable::exists(std::string const& key)
 {
-	size_t index = findEmptyIndex(key);
-	return table[index] != nullptr;
+	IndexSearchResult searchResult = findIndex(key);
+	return searchResult.isFound;
 }
 
 HashTable::HashNode HashTable::StringHashTable::getValue(std::string const& key)
 {
-	size_t index = findEmptyIndex(key);
-	if (table[index] == nullptr)
-		throw HashTable::KeyNotExistsException();
-
-	return *table[index];
+	IndexSearchResult searchResult = findIndex(key);
+	return searchResult.isFound ?
+		*table[searchResult.index] :
+		throw KeyNotExistsException();
 }
 
 HashTable::StringHashTable::~StringHashTable()
@@ -52,15 +62,37 @@ HashTable::StringHashTable::~StringHashTable()
 	delete[] table;
 }
 
-size_t HashTable::StringHashTable::findEmptyIndex(std::string const& key)
+HashTable::IndexSearchResult HashTable::StringHashTable::findIndex(std::string const& key)
+{
+	for (int i = 0; i < capacity; i++)
+	{
+		size_t hash = getHash(key, i);
+		if (isIndexExists(hash))
+			return { true, hash };
+	}
+	return { false, 0 };
+}
+
+HashTable::IndexSearchResult HashTable::StringHashTable::findEmptyIndex(std::string const& key)
 {
 	for (int i = 0; i < capacity; i++)
 	{
 		size_t hash = getHash(key, i);
 		if (isIndexEmpty(hash))
-			return hash;
+			return { true, hash };
 	}
-	throw HashTable::EmptyIndexNotFoundException();
+	return { false, 0 };
+}
+
+bool HashTable::StringHashTable::isIndexExists(size_t const index)
+{
+	if (table[index] == nullptr)
+		return false;
+
+	if (table[index]->status == NodeStatus::Deleted)
+		return false;
+
+	return true;
 }
 
 bool HashTable::StringHashTable::isIndexEmpty(size_t const index)
@@ -102,7 +134,7 @@ void HashTable::StringHashTable::rehash()
 	{
 		if (oldTable[i] != nullptr)
 		{
-			insert(, );
+			insert(oldTable[i]->phoneNumber, oldTable[i]->address);
 			delete oldTable[i];
 		}
 	}

@@ -29,9 +29,19 @@
 
 namespace HashTable
 {
-	struct HashNode {
+	enum class NodeStatus { Filled, Deleted };
+
+	struct HashNode 
+	{
 		std::string phoneNumber;
 		std::string address;
+		NodeStatus status;
+	};
+
+	struct IndexSearchResult 
+	{
+		bool isFound;
+		size_t index;
 	};
 
 	// TODO: overload operator []
@@ -40,7 +50,7 @@ namespace HashTable
 	{
 	public:
 		StringHashTable();
-		bool insert(string const& phoneNumber, string const& address);
+		bool insert(std::string const& phoneNumber, std::string const& address);
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
 		HashNode getValue(std::string const& key);
@@ -54,14 +64,15 @@ namespace HashTable
 		float rebuidlLoadFactor = 0.5;
 		HashNode** table;
 
-		size_t findEmptyIndex(std::string const& key);
+		IndexSearchResult findIndex(std::string const& key);
+		IndexSearchResult findEmptyIndex(std::string const& key);
+		bool isIndexExists(size_t const index);
 		bool isIndexEmpty(size_t const index);
 
 		size_t getHash(std::string const& key, size_t const& i);
 		size_t getAsciiSum(std::string str);
 		bool checkRebuild();
 		void rehash();
-
 	};
 
 	class EmptyIndexNotFoundException : public std::exception 

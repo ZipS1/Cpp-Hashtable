@@ -67,7 +67,7 @@ HashTable::IndexSearchResult HashTable::StringHashTable::findIndex(std::string c
 	for (int i = 0; i < capacity; i++)
 	{
 		size_t hash = getHash(key, i);
-		if (isIndexExists(hash))
+		if (isIndexExists(hash) && table[hash]->phoneNumber == key)
 			return { true, hash };
 	}
 	return { false, 0 };

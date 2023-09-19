@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "framework.h"
-#include "hash-table.h"
 using namespace std;
 
 

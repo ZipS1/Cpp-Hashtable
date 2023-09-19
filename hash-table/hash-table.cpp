@@ -9,25 +9,33 @@ HashTable::StringHashTable::StringHashTable()
 	table = new HashNode*[capacity];
 }
 
-bool HashTable::StringHashTable::insert(HashNode node)
+bool HashTable::StringHashTable::insert(string const& phoneNumber, string const& address)
 {
-	return false;
+
+	size_t index = findEmptyIndex(phoneNumber);
+	HashNode* hashNode = new HashNode{ phoneNumber, address };
+	table[index] = hashNode;
+
+	size++;
+	checkRebuild();
+	return true;
 }
 
 bool HashTable::StringHashTable::remove(std::string const& key)
 {
 	return false;
+
 }
 
 bool HashTable::StringHashTable::exists(std::string const& key)
 {
-	size_t index = findIndex(key);
+	size_t index = findEmptyIndex(key);
 	return table[index] != nullptr;
 }
 
 HashTable::HashNode HashTable::StringHashTable::getValue(std::string const& key)
 {
-	size_t index = findIndex(key);
+	size_t index = findEmptyIndex(key);
 	if (table[index] == nullptr)
 		throw HashTable::KeyNotExistsException();
 
@@ -44,7 +52,7 @@ HashTable::StringHashTable::~StringHashTable()
 	delete[] table;
 }
 
-size_t HashTable::StringHashTable::findIndex(std::string const& key)
+size_t HashTable::StringHashTable::findEmptyIndex(std::string const& key)
 {
 	for (int i = 0; i < capacity; i++)
 	{
@@ -52,7 +60,7 @@ size_t HashTable::StringHashTable::findIndex(std::string const& key)
 		if (isIndexEmpty(hash))
 			return hash;
 	}
-	throw HashTable::FreeIndexNotFoundException();
+	throw HashTable::EmptyIndexNotFoundException();
 }
 
 bool HashTable::StringHashTable::isIndexEmpty(size_t const index)
@@ -94,7 +102,9 @@ void HashTable::StringHashTable::rehash()
 	{
 		if (oldTable[i] != nullptr)
 		{
-			// TODO: implement me | ref https://codereview.stackexchange.com/questions/208857/rehashing-a-hash-table-in-c-with-quadratic-probing
+			insert(, );
+			delete oldTable[i];
 		}
 	}
+	delete[] oldTable;
 }

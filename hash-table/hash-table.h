@@ -40,7 +40,7 @@ namespace HashTable
 	{
 	public:
 		StringHashTable();
-		bool insert(HashNode node);
+		bool insert(string const& phoneNumber, string const& address);
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
 		HashNode getValue(std::string const& key);
@@ -54,7 +54,7 @@ namespace HashTable
 		float rebuidlLoadFactor = 0.5;
 		HashNode** table;
 
-		size_t findIndex(std::string const& key);
+		size_t findEmptyIndex(std::string const& key);
 		bool isIndexEmpty(size_t const index);
 
 		size_t getHash(std::string const& key, size_t const& i);
@@ -64,7 +64,7 @@ namespace HashTable
 
 	};
 
-	class FreeIndexNotFoundException : public std::exception 
+	class EmptyIndexNotFoundException : public std::exception 
 	{
 	public:
 		const char* what() const override

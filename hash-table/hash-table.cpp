@@ -6,7 +6,7 @@ using namespace std;
 
 HashTable::StringHashTable::StringHashTable()
 {
-	table = new HashNode*[capacity];
+	table = new HashNode * [capacity] {};
 }
 
 bool HashTable::StringHashTable::insert(std::string const& phoneNumber, std::string const& address)
@@ -44,11 +44,11 @@ bool HashTable::StringHashTable::exists(std::string const& key)
 	return searchResult.isFound;
 }
 
-HashTable::HashNode HashTable::StringHashTable::getValue(std::string const& key)
+HashTable::Record HashTable::StringHashTable::getValue(std::string const& key)
 {
 	IndexSearchResult searchResult = findIndex(key);
 	return searchResult.isFound ?
-		*table[searchResult.index] :
+		table[searchResult.index]->record :
 		throw KeyNotExistsException();
 }
 
@@ -67,7 +67,7 @@ HashTable::IndexSearchResult HashTable::StringHashTable::findIndex(std::string c
 	for (int i = 0; i < capacity; i++)
 	{
 		size_t hash = getHash(key, i);
-		if (isIndexExists(hash) && table[hash]->phoneNumber == key)
+		if (isIndexExists(hash) && table[hash]->record.phoneNumber == key)
 			return { true, hash };
 	}
 	return { false, 0 };
@@ -128,13 +128,14 @@ void HashTable::StringHashTable::rehash()
 	HashNode** oldTable = table;
 	capacity *= 2;
 	size = 0;
-	table = new HashNode*[capacity];
+	table = new HashNode * [capacity] {};
 
 	for (size_t i = 0; i < oldCapacity; i++)
 	{
 		if (oldTable[i] != nullptr)
 		{
-			insert(oldTable[i]->phoneNumber, oldTable[i]->address);
+			insert(oldTable[i]->record.phoneNumber, 
+					oldTable[i]->record.address);
 			delete oldTable[i];
 		}
 	}

@@ -31,10 +31,15 @@ namespace HashTable
 {
 	enum class NodeStatus { Filled, Deleted };
 
-	struct HashNode 
+	struct Record
 	{
 		std::string phoneNumber;
 		std::string address;
+	};
+
+	struct HashNode 
+	{
+		Record record;
 		NodeStatus status;
 	};
 
@@ -53,10 +58,10 @@ namespace HashTable
 		bool insert(std::string const& phoneNumber, std::string const& address);
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
-		HashNode getValue(std::string const& key);
+		Record getValue(std::string const& key);
 		~StringHashTable();
 	private:
-		static const int initialCapacity = 20;
+		static const int initialCapacity = 101;
 		size_t size = 0;
 		size_t capacity = initialCapacity;
 		size_t c = 0;

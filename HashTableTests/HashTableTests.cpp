@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "hash-table.h"
+#include <codecvt>
 #include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -126,7 +128,7 @@ namespace HashTableTests
 			Assert::AreEqual(expected25, table[expected25.phoneNumber]);
 		}
 
-		TEST_METHOD(HardInsertionWithRehashing)
+		TEST_METHOD(HeavyInsertionWithRehashing)
 		{
 			// Arrange
 			HashTable::StringHashTable table;
@@ -300,21 +302,5 @@ namespace HashTableTests
 			Assert::AreEqual(expected54, table[expected54.phoneNumber]);
 			Assert::AreEqual(expected55, table[expected55.phoneNumber]);
 		}
-	};
-
-	TEST_CLASS(RemovalTests)
-	{
-	public:
-		TEST_METHOD(SingleRemoval)
-		{
-			// Arrange
-			
-
-			// Act
-
-
-			// Assert
-		}
-
 	};
 }

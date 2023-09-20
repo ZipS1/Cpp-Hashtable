@@ -39,7 +39,7 @@ namespace HashTable
 		friend bool operator==(const Record& a, const Record& b);
 	};
 
-	bool operator==(const Record& a, const Record& b)
+	inline bool operator==(const Record& a, const Record& b)
 	{
 		return a.phoneNumber == b.phoneNumber && a.address == b.address;
 	}

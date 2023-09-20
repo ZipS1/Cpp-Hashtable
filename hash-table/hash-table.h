@@ -35,7 +35,14 @@ namespace HashTable
 	{
 		std::string phoneNumber;
 		std::string address;
+
+		friend bool operator==(const Record& a, const Record& b);
 	};
+
+	bool operator==(const Record& a, const Record& b)
+	{
+		return a.phoneNumber == b.phoneNumber && a.address == b.address;
+	}
 
 	struct HashNode 
 	{

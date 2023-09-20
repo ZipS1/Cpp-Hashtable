@@ -142,8 +142,7 @@ void HashTable::StringHashTable::rehash()
 	{
 		if (oldTable[i] != nullptr)
 		{
-			insert(oldTable[i]->record.phoneNumber, 
-					oldTable[i]->record.address);
+			insert(oldTable[i]->record);
 			delete oldTable[i];
 		}
 	}

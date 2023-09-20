@@ -7,15 +7,15 @@ HashTable::StringHashTable::StringHashTable()
 	table = new HashNode * [capacity] {};
 }
 
-bool HashTable::StringHashTable::insert(std::string const& phoneNumber, std::string const& address)
+bool HashTable::StringHashTable::insert(Record const& record)
 {
-	if (exists(phoneNumber))
+	if (exists(record.phoneNumber))
 		return false;
 
-	IndexSearchResult searchResult = findEmptyIndex(phoneNumber);
+	IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
 	if (searchResult.isFound)
 	{
-		HashNode* hashNode = new HashNode{ phoneNumber, address, NodeStatus::Filled };
+		HashNode* hashNode = new HashNode{ record, NodeStatus::Filled };
 		if (table[searchResult.index] != nullptr)
 			delete table[searchResult.index];
 		table[searchResult.index] = hashNode;

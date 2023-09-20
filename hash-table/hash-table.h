@@ -55,7 +55,7 @@ namespace HashTable
 	{
 	public:
 		StringHashTable();
-		bool insert(std::string const& phoneNumber, std::string const& address);
+		bool insert(Record const& record);
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
 		Record getValue(std::string const& key);

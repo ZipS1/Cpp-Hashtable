@@ -9,6 +9,9 @@ HashTable::StringHashTable::StringHashTable()
 
 bool HashTable::StringHashTable::insert(std::string const& phoneNumber, std::string const& address)
 {
+	if (exists(phoneNumber))
+		return false;
+
 	IndexSearchResult searchResult = findEmptyIndex(phoneNumber);
 	if (searchResult.isFound)
 	{
@@ -60,6 +63,11 @@ HashTable::StringHashTable::~StringHashTable()
 		}
 	}
 	delete[] table;
+}
+
+HashTable::Record HashTable::StringHashTable::operator[](std::string const& key)
+{
+	return getValue(key);
 }
 
 HashTable::IndexSearchResult HashTable::StringHashTable::findIndex(std::string const& key)

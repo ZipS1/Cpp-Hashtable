@@ -60,6 +60,8 @@ namespace HashTable
 		bool exists(std::string const& key);
 		Record getValue(std::string const& key);
 		~StringHashTable();
+
+		Record operator[](std::string const& key);
 	private:
 		static const int initialCapacity = 100;
 		size_t size = 0;

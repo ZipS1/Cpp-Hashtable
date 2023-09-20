@@ -13,6 +13,8 @@ bool HashTable::StringHashTable::insert(std::string const& phoneNumber, std::str
 	if (searchResult.isFound)
 	{
 		HashNode* hashNode = new HashNode{ phoneNumber, address, NodeStatus::Filled };
+		if (table[searchResult.index] != nullptr)
+			delete table[searchResult.index];
 		table[searchResult.index] = hashNode;
 	}
 	else
@@ -95,7 +97,7 @@ bool HashTable::StringHashTable::isIndexExists(size_t const index)
 
 bool HashTable::StringHashTable::isIndexEmpty(size_t const index)
 {
-	return table[index] == nullptr;
+	return table[index] == nullptr || table[index]->status == NodeStatus::Deleted;
 }
 
 size_t HashTable::StringHashTable::getHash(std::string const& key, size_t const& i)

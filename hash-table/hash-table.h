@@ -61,7 +61,7 @@ namespace HashTable
 		Record getValue(std::string const& key);
 		~StringHashTable();
 	private:
-		static const int initialCapacity = 101;
+		static const int initialCapacity = 100;
 		size_t size = 0;
 		size_t capacity = initialCapacity;
 		size_t c = 0;

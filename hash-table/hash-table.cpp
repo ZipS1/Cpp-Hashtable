@@ -10,7 +10,13 @@ HashTable::StringHashTable::StringHashTable()
 bool HashTable::StringHashTable::insert(Record const& record)
 {
 	if (exists(record.phoneNumber))
-		return false;
+	{
+		auto searchResult = findIndex(record.phoneNumber);
+		if (record.address != table[searchResult.index]->record.address)
+			table[searchResult.index]->record.address = record.address;
+		
+		return true;
+	}
 
 	IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
 	if (searchResult.isFound)
@@ -34,7 +40,7 @@ bool HashTable::StringHashTable::remove(std::string const& key)
 	if (searchResult.isFound)
 		table[searchResult.index]->status = NodeStatus::Deleted;
 	else
-		throw KeyNotExistsException();
+		return false;
 
 	size--;
 	return true;

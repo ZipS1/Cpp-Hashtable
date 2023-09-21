@@ -5,6 +5,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+#pragma region FrameworkUtilityCode
 namespace Microsoft {
 	namespace VisualStudio {
 		namespace CppUnitTestFramework {
@@ -18,6 +19,7 @@ namespace Microsoft {
 		}
 	}
 }
+#pragma endregion
 
 namespace HashTableTests
 {
@@ -301,6 +303,37 @@ namespace HashTableTests
 			Assert::AreEqual(expected53, table[expected53.phoneNumber]);
 			Assert::AreEqual(expected54, table[expected54.phoneNumber]);
 			Assert::AreEqual(expected55, table[expected55.phoneNumber]);
+		}
+
+		TEST_METHOD(SameRecordInsertion)
+		{
+
+		}
+
+		TEST_METHOD(SameKeyInsertion)
+		{
+
+		}
+	};
+
+	TEST_CLASS(RemovalTests)
+	{
+	public:
+		TEST_METHOD(SingleRemoval)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			table.insert(record);
+
+			// Act
+			bool isOk = table.remove(record.phoneNumber);
+
+
+			// Assert
+			Assert::IsTrue(isOk);
+			Assert::IsTrue(table.exists(record.phoneNumber));
+			Assert::IsFalse(table.remove(record.phoneNumber));
 		}
 	};
 }

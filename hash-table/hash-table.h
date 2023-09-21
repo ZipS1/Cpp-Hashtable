@@ -66,6 +66,8 @@ namespace HashTable
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
 		Record getValue(std::string const& key);
+		size_t getSize() { return size; }
+		size_t getCapacity() { return capacity; }
 		~StringHashTable();
 
 		Record operator[](std::string const& key);
@@ -78,6 +80,8 @@ namespace HashTable
 		float rebuidlLoadFactor = 0.5;
 		HashNode** table;
 
+		void insertExistingKey(Record const& record);
+		void insertNewKey(Record const& record);
 		IndexSearchResult findIndex(std::string const& key);
 		IndexSearchResult findEmptyIndex(std::string const& key);
 		bool isIndexExists(size_t const index);

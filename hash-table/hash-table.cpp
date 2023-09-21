@@ -9,27 +9,9 @@ HashTable::StringHashTable::StringHashTable()
 
 bool HashTable::StringHashTable::insert(Record const& record)
 {
-	if (exists(record.phoneNumber))
-	{
-		auto searchResult = findIndex(record.phoneNumber);
-		if (record.address != table[searchResult.index]->record.address)
-			table[searchResult.index]->record.address = record.address;
-	}
-	else 
-	{
-		IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
-		if (searchResult.isFound)
-		{
-			HashNode* hashNode = new HashNode{ record, NodeStatus::Filled };
-			if (table[searchResult.index] != nullptr)
-				delete table[searchResult.index];
-			table[searchResult.index] = hashNode;
-			size++;
-			checkRebuild();
-		}
-		else
-			throw EmptyIndexNotFoundException();
-	}
+	exists(record.phoneNumber) ? 
+		insertExistingKey(record):
+		insertNewKey(record);
 
 	return true;
 }
@@ -74,6 +56,29 @@ HashTable::StringHashTable::~StringHashTable()
 HashTable::Record HashTable::StringHashTable::operator[](std::string const& key)
 {
 	return getValue(key);
+}
+
+void HashTable::StringHashTable::insertExistingKey(Record const& record)
+{
+	auto searchResult = findIndex(record.phoneNumber);
+	if (record.address != table[searchResult.index]->record.address)
+		table[searchResult.index]->record.address = record.address;
+}
+
+void HashTable::StringHashTable::insertNewKey(Record const& record)
+{
+	IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
+	if (searchResult.isFound)
+	{
+		HashNode* hashNode = new HashNode{ record, NodeStatus::Filled };
+		if (table[searchResult.index] != nullptr)
+			delete table[searchResult.index];
+		table[searchResult.index] = hashNode;
+		size++;
+		checkRebuild();
+	}
+	else
+		throw EmptyIndexNotFoundException();
 }
 
 HashTable::IndexSearchResult HashTable::StringHashTable::findIndex(std::string const& key)

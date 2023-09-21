@@ -787,4 +787,96 @@ namespace HashTableTests
 			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 	};
+
+	TEST_CLASS(ExistsTests)
+	{
+	public:
+		TEST_METHOD(ExistsOnInsertion)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			table.insert(record);
+
+			// Act
+			bool isExists = table.exists(record.phoneNumber);
+
+			// Assert
+			Assert::IsTrue(isExists);
+		}
+
+		TEST_METHOD(ExistsOnRemoval)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			table.insert(record);
+			table.remove(record.phoneNumber);
+
+			// Act
+			bool isExists = table.exists(record.phoneNumber);
+
+			// Assert
+			Assert::IsFalse(isExists);
+		}
+
+		TEST_METHOD(ExistsOnNull)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+
+			// Act
+			bool isExists = table.exists(record.phoneNumber);
+
+			// Assert
+			Assert::IsFalse(isExists);
+		}
+	};
+
+	TEST_CLASS(GetValueTests)
+	{
+	public:
+		TEST_METHOD(GetValueOnInsertion)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record expectedRecord{ "1", "adr1" };
+			table.insert(expectedRecord);
+
+			// Act
+			HashTable::Record actualRecord = table.getValue(expectedRecord.phoneNumber);
+
+			// Assert
+			Assert::AreEqual(expectedRecord, actualRecord);
+		}
+
+		TEST_METHOD(GetValueOnRemoval)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			table.insert(record);
+			table.remove(record.phoneNumber);
+
+			// Act
+			auto func = [&] { table.getValue(record.phoneNumber); };
+
+			// Assert
+			Assert::ExpectException<HashTable::KeyNotExistsException>(func);
+		}
+
+		TEST_METHOD(GetValueOnNull)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+
+			// Act
+			auto func = [&] { table.getValue(record.phoneNumber); };
+
+			// Assert
+			Assert::ExpectException<HashTable::KeyNotExistsException>(func);
+		}
+	};
 }

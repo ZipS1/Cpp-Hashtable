@@ -14,30 +14,30 @@ bool HashTable::StringHashTable::insert(Record const& record)
 		auto searchResult = findIndex(record.phoneNumber);
 		if (record.address != table[searchResult.index]->record.address)
 			table[searchResult.index]->record.address = record.address;
-		
-		return true;
 	}
-
-	IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
-	if (searchResult.isFound)
+	else 
 	{
-		HashNode* hashNode = new HashNode{ record, NodeStatus::Filled };
-		if (table[searchResult.index] != nullptr)
-			delete table[searchResult.index];
-		table[searchResult.index] = hashNode;
+		IndexSearchResult searchResult = findEmptyIndex(record.phoneNumber);
+		if (searchResult.isFound)
+		{
+			HashNode* hashNode = new HashNode{ record, NodeStatus::Filled };
+			if (table[searchResult.index] != nullptr)
+				delete table[searchResult.index];
+			table[searchResult.index] = hashNode;
+			size++;
+			checkRebuild();
+		}
+		else
+			throw EmptyIndexNotFoundException();
 	}
-	else
-		throw EmptyIndexNotFoundException();
 
-	size++;
-	checkRebuild();
 	return true;
 }
 
 bool HashTable::StringHashTable::remove(std::string const& key)
 {
 	IndexSearchResult searchResult = findIndex(key);
-	if (searchResult.isFound)
+	if (searchResult.isFound && table[searchResult.index]->status == NodeStatus::Filled)
 		table[searchResult.index]->status = NodeStatus::Deleted;
 	else
 		return false;

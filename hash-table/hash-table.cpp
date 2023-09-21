@@ -26,7 +26,6 @@ bool HashTable::StringHashTable::remove(std::string const& key)
 
 	size--;
 	return true;
-
 }
 
 bool HashTable::StringHashTable::exists(std::string const& key)

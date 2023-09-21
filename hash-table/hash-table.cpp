@@ -52,11 +52,6 @@ HashTable::StringHashTable::~StringHashTable()
 	delete[] table;
 }
 
-HashTable::Record HashTable::StringHashTable::operator[](std::string const& key)
-{
-	return getValue(key);
-}
-
 void HashTable::StringHashTable::insertExistingKey(Record const& record)
 {
 	auto searchResult = findIndex(record.phoneNumber);

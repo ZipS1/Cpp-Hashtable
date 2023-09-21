@@ -69,7 +69,7 @@ namespace HashTable
 		size_t getCapacity() { return capacity; }
 		~StringHashTable();
 
-		Record operator[](std::string const& key);
+		Record operator[](std::string const& key) { return getValue(key); }
 	private:
 		static const int initialCapacity = 100;
 		size_t size = 0;

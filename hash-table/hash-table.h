@@ -56,8 +56,7 @@ namespace HashTable
 		size_t index;
 	};
 
-	// TODO: overload operator []
-	// TODO: overload operator <<
+	// make iterable table
 	class StringHashTable
 	{
 	public:

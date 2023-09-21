@@ -24,9 +24,6 @@
 * (и, как следствие, допустимое количество записей в динамическом множестве).
 */
 
-
-
-
 namespace HashTable
 {
 	enum class NodeStatus { Filled, Deleted };
@@ -70,6 +67,35 @@ namespace HashTable
 		~StringHashTable();
 
 		Record operator[](std::string const& key) { return getValue(key); }
+
+#pragma region iterator
+		class iterator : public std::iterator
+			<std::input_iterator_tag, HashNode, int, const HashNode*, Record>
+		{
+		public:
+			iterator(HashNode** table, size_t index) : table(const_cast<const HashNode**>(table)), index(index) {}
+			iterator& operator++() 
+			{
+				for (index++; table[index] == nullptr; index++);
+				return *this;
+			}
+			iterator operator++(int) 
+			{
+				auto retval = *this;
+				for (index++; table[index] == nullptr; index++);
+				return retval;
+			}
+			bool operator==(iterator other) const { return this->index == other.index; }
+			bool operator!=(iterator other) const { return !(*this == other); }
+			reference operator*() const { return table[index]->record; }
+
+		private:
+			const HashNode** table;
+			size_t index;
+		};
+#pragma endregion
+		iterator begin();
+		iterator end();
 	private:
 		static const int initialCapacity = 100;
 		size_t size = 0;

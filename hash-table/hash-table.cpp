@@ -52,6 +52,20 @@ HashTable::StringHashTable::~StringHashTable()
 	delete[] table;
 }
 
+HashTable::StringHashTable::iterator HashTable::StringHashTable::begin()
+{
+	size_t i;
+	for (i = 0; i < capacity && table[i] == nullptr; i++);
+	return iterator(table, i);
+}
+
+HashTable::StringHashTable::iterator HashTable::StringHashTable::end()
+{
+	size_t i;
+	for (i = capacity - 1; i >= 0 && table[i] == nullptr; i--);
+	return iterator(table, i);
+}
+
 void HashTable::StringHashTable::insertExistingKey(Record const& record)
 {
 	auto searchResult = findIndex(record.phoneNumber);

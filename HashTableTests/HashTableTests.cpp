@@ -33,6 +33,8 @@ namespace HashTableTests
 			HashTable::Record expected1 = { "1", "adr1" };
 			HashTable::Record expected2 = { "10", "adr10" };
 			HashTable::Record expected3 = { "20", "adr20" };
+			size_t expectedSize = 3;
+			size_t expectedCapacity = 100;
 
 			// Act
 			table.insert(expected1);
@@ -43,6 +45,8 @@ namespace HashTableTests
 			Assert::AreEqual(expected1, table[expected1.phoneNumber]);
 			Assert::AreEqual(expected2, table[expected2.phoneNumber]);
 			Assert::AreEqual(expected3, table[expected3.phoneNumber]);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(MediumInsertion)
@@ -74,6 +78,8 @@ namespace HashTableTests
 			HashTable::Record expected23 = { "12", "adr20" };
 			HashTable::Record expected24 = { "13", "adr20" };
 			HashTable::Record expected25 = { "14", "adr20" };
+			size_t expectedSize = 25;
+			size_t expectedCapacity = 100;
 
 			// Act
 			table.insert(expected1);
@@ -128,6 +134,8 @@ namespace HashTableTests
 			Assert::AreEqual(expected23, table[expected23.phoneNumber]);
 			Assert::AreEqual(expected24, table[expected24.phoneNumber]);
 			Assert::AreEqual(expected25, table[expected25.phoneNumber]);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(HeavyInsertionWithRehashing)
@@ -189,6 +197,8 @@ namespace HashTableTests
 			HashTable::Record expected53 = { "1423", "adr20" };
 			HashTable::Record expected54 = { "1424", "adr20" };
 			HashTable::Record expected55 = { "14226", "adr20" };
+			size_t expectedSize = 55;
+			size_t expectedCapacity = 200;
 
 			// Act
 			table.insert(expected1);
@@ -303,16 +313,45 @@ namespace HashTableTests
 			Assert::AreEqual(expected53, table[expected53.phoneNumber]);
 			Assert::AreEqual(expected54, table[expected54.phoneNumber]);
 			Assert::AreEqual(expected55, table[expected55.phoneNumber]);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
-		TEST_METHOD(SameRecordInsertion)
+		TEST_METHOD(ExistingRecordInsertion)
 		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			table.insert(record);
+			size_t expectedSize = 1;
+			size_t expectedCapacity = 100;
 
+			// Act
+			table.insert(record);
+
+			// Assert
+			Assert::AreEqual(record, table[record.phoneNumber]);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
-		TEST_METHOD(SameKeyInsertion)
+		TEST_METHOD(ExistingKeyInsertion)
 		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record{ "1", "adr1" };
+			HashTable::Record editedRecord{ "1", "adredited" };
+			table.insert(record);
+			size_t expectedSize = 1;
+			size_t expectedCapacity = 100;
 
+			// Act
+			table.insert(editedRecord);
+
+			// Assert
+			Assert::AreEqual(editedRecord, table[record.phoneNumber]);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 	};
 
@@ -324,6 +363,8 @@ namespace HashTableTests
 			// Arrange
 			HashTable::StringHashTable table;
 			HashTable::Record record{ "1", "adr1" };
+			size_t expectedSize = 0;
+			size_t expectedCapacity = 100;
 			table.insert(record);
 
 			// Act
@@ -332,8 +373,10 @@ namespace HashTableTests
 
 			// Assert
 			Assert::IsTrue(isOk);
-			Assert::IsTrue(table.exists(record.phoneNumber));
+			Assert::IsFalse(table.exists(record.phoneNumber));
 			Assert::IsFalse(table.remove(record.phoneNumber));
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 	};
 }

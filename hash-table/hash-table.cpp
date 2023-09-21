@@ -63,7 +63,7 @@ HashTable::StringHashTable::iterator HashTable::StringHashTable::end()
 {
 	size_t i;
 	for (i = capacity - 1; i >= 0 && table[i] == nullptr; i--);
-	return iterator(table, i);
+	return iterator(table, ++i);
 }
 
 void HashTable::StringHashTable::insertExistingKey(Record const& record)

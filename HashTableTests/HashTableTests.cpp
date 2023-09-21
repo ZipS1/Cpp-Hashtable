@@ -879,4 +879,123 @@ namespace HashTableTests
 			Assert::ExpectException<HashTable::KeyNotExistsException>(func);
 		}
 	};
+
+	TEST_CLASS(IteratorTests)
+	{
+	public:
+		TEST_METHOD(IteratorBeginElement)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record expectedRecord{ "1", "adr1" };
+			HashTable::Record record2{ "2", "adr2" };
+			HashTable::Record record3{ "3", "adr3" };
+			table.insert(expectedRecord);
+			table.insert(record2);
+			table.insert(record3);
+
+			// Act
+			auto it = table.begin();
+
+			// Assert
+			Assert::AreEqual(expectedRecord, *it);
+		}
+
+		TEST_METHOD(IteratorMiddleElement)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "1", "adr1" };
+			HashTable::Record record2{ "2", "adr2" };
+			HashTable::Record record3{ "3", "adr3" };
+			HashTable::Record expectedRecord{ "3", "adr3" };
+			HashTable::Record record5{ "3", "adr3" };
+			HashTable::Record record6{ "3", "adr3" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(record3);
+			table.insert(expectedRecord);
+			table.insert(record5);
+			table.insert(record6);
+			size_t forwardAmount = 3;
+
+			// Act
+			auto it = table.begin();
+			for (size_t i = 0; i < forwardAmount; i++)
+				it++;
+
+			// Assert
+			Assert::AreEqual(expectedRecord, *it);
+		}
+
+		TEST_METHOD(IteratorLastElement)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "1", "adr1" };
+			HashTable::Record record2{ "2", "adr2" };
+			HashTable::Record expectedRecord{ "3", "adr3" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(expectedRecord);
+
+			// Act
+			HashTable::Record record;
+			for (auto it = table.begin(); it != table.end(); it++)
+				record = *it;
+
+			// Assert
+			Assert::AreEqual(expectedRecord, record);
+		}
+
+		TEST_METHOD(IteratorForLoop)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "yui", "adr1" };
+			HashTable::Record record2{ "trt", "adr2" };
+			HashTable::Record record3{ "hgf", "adr3" };
+			HashTable::Record record4{ "mnb", "adr4" };
+			HashTable::Record record5{ "oki", "adr5" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(record3);
+			table.insert(record4);
+			table.insert(record5);
+			size_t expectedCounter = table.getSize();
+
+			// Act
+			size_t actualCounter = 0;
+			for (auto it = table.begin(); it != table.end(); it++)
+				actualCounter++;
+
+			// Assert
+			Assert::AreEqual(expectedCounter, actualCounter);
+		}
+
+		TEST_METHOD(IteratorForEach)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "yui", "adr1" };
+			HashTable::Record record2{ "trt", "adr2" };
+			HashTable::Record record3{ "hgf", "adr3" };
+			HashTable::Record record4{ "mnb", "adr4" };
+			HashTable::Record record5{ "oki", "adr5" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(record3);
+			table.insert(record4);
+			table.insert(record5);
+			size_t expectedCounter = table.getSize();
+
+			// Act
+			size_t actualCounter = 0;
+			for (auto record : table)
+				actualCounter++;
+
+			// Assert
+			Assert::AreEqual(expectedCounter, actualCounter);
+		}
+	};
 }

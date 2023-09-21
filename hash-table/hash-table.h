@@ -70,7 +70,7 @@ namespace HashTable
 
 #pragma region iterator
 		class iterator : public std::iterator
-			<std::input_iterator_tag, HashNode, int, const HashNode*, Record>
+			<std::input_iterator_tag, HashNode, int, const Record*, Record>
 		{
 		public:
 			iterator(HashNode** table, size_t index) : table(const_cast<const HashNode**>(table)), index(index) {}
@@ -88,6 +88,7 @@ namespace HashTable
 			bool operator==(iterator other) const { return this->index == other.index; }
 			bool operator!=(iterator other) const { return !(*this == other); }
 			reference operator*() const { return table[index]->record; }
+			pointer operator->() const { return &table[index]->record; }
 
 		private:
 			const HashNode** table;

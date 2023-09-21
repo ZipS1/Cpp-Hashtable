@@ -8,6 +8,5 @@ int main()
 	table.insert({"2", "adr2"});
 	table.insert({"3", "adr3"});
 	for (auto it = table.begin(); it != table.end(); it++)
-		std::cout << (*it).phoneNumber << " || " << (*it).address << std::endl;
-
+		std::cout << it->phoneNumber << " || " << it->address << std::endl;
 }

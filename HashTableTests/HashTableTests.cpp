@@ -901,6 +901,25 @@ namespace HashTableTests
 			Assert::AreEqual(expectedRecord, *it);
 		}
 
+		TEST_METHOD(IteratorSecondElement)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "1", "adr1" };
+			HashTable::Record expectedRecord{ "2", "adr2" };
+			HashTable::Record record3{ "3", "adr3" };
+			table.insert(record1);
+			table.insert(expectedRecord);
+			table.insert(record3);
+
+			// Act
+			auto it = table.begin();
+			it++;
+
+			// Assert
+			Assert::AreEqual(expectedRecord, *it);
+		}
+
 		TEST_METHOD(IteratorMiddleElement)
 		{
 			// Arrange
@@ -908,9 +927,9 @@ namespace HashTableTests
 			HashTable::Record record1{ "1", "adr1" };
 			HashTable::Record record2{ "2", "adr2" };
 			HashTable::Record record3{ "3", "adr3" };
-			HashTable::Record expectedRecord{ "3", "adr3" };
-			HashTable::Record record5{ "3", "adr3" };
-			HashTable::Record record6{ "3", "adr3" };
+			HashTable::Record expectedRecord{ "3", "adr4" };
+			HashTable::Record record5{ "3", "adr5" };
+			HashTable::Record record6{ "3", "adr6" };
 			table.insert(record1);
 			table.insert(record2);
 			table.insert(record3);

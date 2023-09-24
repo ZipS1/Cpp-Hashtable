@@ -13,7 +13,7 @@ int main()
 	vector<string> menuItems{ "Insert", "Remove", "Get Value", "Show all" };
 	vector<void (*)()> funcs{ &bar1, &bar2, &bar3, &bar4 };
 
-	ConsoleMenu::ConsoleMenu menu(menuItems, funcs);
+	ConsoleMenu::ConsoleMenu<void (*)()> menu(menuItems, funcs);
 	menu.run();
 }
 

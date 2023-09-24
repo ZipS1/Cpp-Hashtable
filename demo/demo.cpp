@@ -5,16 +5,16 @@ using namespace std;
 
 #pragma region FuncDeclarations
 void insert(HashTable::StringHashTable&);
-void bar2(HashTable::StringHashTable&);
-void bar3(HashTable::StringHashTable&);
-void bar4(HashTable::StringHashTable&);
-void bar5(HashTable::StringHashTable&);
+void remove(HashTable::StringHashTable&);
+void getSize(HashTable::StringHashTable&);
+void getValue(HashTable::StringHashTable&);
+void showAll(HashTable::StringHashTable&);
 #pragma endregion
 
 int main()
 {
-	vector<string> menuItems{ "Insert", "Remove", "Get Size", "Get Value", "Show all" };
-	vector<void (*)(HashTable::StringHashTable&)> funcs{ &insert, &bar2, &bar3, &bar4, &bar5 };
+	vector<string> menuItems{ "Insert", "Remove", "Get size", "Get value", "Show all" };
+	vector<void (*)(HashTable::StringHashTable&)> funcs{ &insert, &remove, &getSize, &getValue, &showAll };
 
 	ConsoleMenu::ConsoleMenu<HashTable::StringHashTable&> menu(menuItems, funcs);
 	HashTable::StringHashTable table;
@@ -33,23 +33,39 @@ void insert(HashTable::StringHashTable& table)
 	table.insert({ phoneNumber, address });
 }
 
-void bar2(HashTable::StringHashTable& table)
+void remove(HashTable::StringHashTable& table)
 {
-	cout << "bar2" << endl;
+	string phoneNumber;
+	cout << "Enter phone number to remove: ";
+	cin >> phoneNumber;
+	table.remove(phoneNumber) ?
+		cout << "Record removed successfully!" << endl :
+		cout << "No such key in hashtable!" << endl;
 }
 
-void bar3(HashTable::StringHashTable& table)
+void getSize(HashTable::StringHashTable& table)
 {
-	cout << "bar3" << endl;
+	cout << "Size: " << table.getSize() << endl;
 }
 
-void bar4(HashTable::StringHashTable& table)
+void getValue(HashTable::StringHashTable& table)
 {
-	cout << "bar4" << endl;
+	string phoneNumber;
+	cout << "Enter phone number: ";
+	cin >> phoneNumber;
+	if (table.exists(phoneNumber))
+	{
+		auto record = table.getValue(phoneNumber);
+		cout << "Phone number - " << record.phoneNumber << endl;
+		cout << "Address - " << record.address << endl;
+	}
+	else
+		cout << "No such key in hashtable!" << endl;
 }
 
-void bar5(HashTable::StringHashTable& table)
+void showAll(HashTable::StringHashTable& table)
 {
-	cout << "bar5" << endl;
+	for (auto record : table)
+		cout << record.phoneNumber << " - " << record.address << endl;
 }
 

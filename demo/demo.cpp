@@ -3,21 +3,25 @@
 #include "console-menu.h"
 using namespace std;
 
-void bar1(HashTable::StringHashTable);
-void bar2(HashTable::StringHashTable);
-void bar3(HashTable::StringHashTable);
-void bar4(HashTable::StringHashTable);
+#pragma region FuncDeclarations
+void insert(HashTable::StringHashTable&);
+void bar2(HashTable::StringHashTable&);
+void bar3(HashTable::StringHashTable&);
+void bar4(HashTable::StringHashTable&);
+void bar5(HashTable::StringHashTable&);
+#pragma endregion
 
 int main()
 {
-	vector<string> menuItems{ "Insert", "Remove", "Get Value", "Show all" };
-	vector<void (*)(HashTable::StringHashTable)> funcs{ &bar1, &bar2, &bar3, &bar4};
+	vector<string> menuItems{ "Insert", "Remove", "Get Size", "Get Value", "Show all" };
+	vector<void (*)(HashTable::StringHashTable&)> funcs{ &insert, &bar2, &bar3, &bar4, &bar5 };
 
-	ConsoleMenu::ConsoleMenu<HashTable::StringHashTable> menu(menuItems, funcs);
-	menu.run();
+	ConsoleMenu::ConsoleMenu<HashTable::StringHashTable&> menu(menuItems, funcs);
+	HashTable::StringHashTable table;
+	menu.run(table);
 }
 
-bool insert(HashTable::StringHashTable& table)
+void insert(HashTable::StringHashTable& table)
 {
 	string phoneNumber;
 	string address;
@@ -26,18 +30,7 @@ bool insert(HashTable::StringHashTable& table)
 	cin >> phoneNumber;
 	cout << "Address - ";
 	cin >> address;
-	bool returnValue = table.insert({ phoneNumber, address });
-	return returnValue;
-}
-
-bool foo(HashTable::StringHashTable& table)
-{
-	return false;
-}
-
-void bar1(HashTable::StringHashTable& table)
-{
-	cout << "bar1" << endl;
+	table.insert({ phoneNumber, address });
 }
 
 void bar2(HashTable::StringHashTable& table)
@@ -54,3 +47,9 @@ void bar4(HashTable::StringHashTable& table)
 {
 	cout << "bar4" << endl;
 }
+
+void bar5(HashTable::StringHashTable& table)
+{
+	cout << "bar5" << endl;
+}
+

@@ -77,13 +77,13 @@ namespace HashTable
 				table(table), index(index), capacity(capacity) {}
 			iterator& operator++() 
 			{
-				for (index++; (table[index] == nullptr || table[index]->status == NodeStatus::Deleted) && index != capacity; index++);
+				for (index++; index != capacity && isIndexEmpty(); index++);
 				return *this;
 			}
 			iterator operator++(int) 
 			{
 				auto retval = *this;
-				for (index++; (table[index] == nullptr || table[index]->status == NodeStatus::Deleted) && index != capacity; index++);
+				for (index++; index != capacity && isIndexEmpty(); index++);
 				return retval;
 			}
 			bool operator==(iterator other) const { return this->index == other.index; }
@@ -95,6 +95,7 @@ namespace HashTable
 			HashNode** const table;
 			size_t const capacity;
 			size_t index;
+			bool isIndexEmpty() { return table[index] == nullptr || table[index]->status == NodeStatus::Deleted; }
 		};
 #pragma endregion
 		iterator begin();

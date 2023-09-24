@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "framework.h"
 
 namespace ConsoleMenu
 {	
@@ -9,7 +10,7 @@ namespace ConsoleMenu
 	class ConsoleMenu
 	{
 	public:
-		ConsoleMenu(std::vector<std::string> const& menuItems, std::vector<void (*)(Args...)> funcs);
+		ConsoleMenu(std::vector<std::string> const& menuItems, std::vector<void (*)(Args...)> const funcs);
 		void run();
 		
 

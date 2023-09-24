@@ -2,7 +2,8 @@
 using namespace std;
 
 template<typename ...Args>
-ConsoleMenu::ConsoleMenu<Args...>::ConsoleMenu(std::vector<std::string> const& menuItems, std::vector<void(*)(Args...)> funcs)
+ConsoleMenu::ConsoleMenu<Args...>::ConsoleMenu(std::vector<std::string> const& menuItems, 
+												std::vector<void(*)(Args...)> const funcs)
 	: menuItems(menuItems), functions(funcs)
 {
 	const_cast<vector<std::string>&>(this->menuItems).push_back("Exit");

@@ -13,7 +13,7 @@ void showAll(HashTable::StringHashTable&);
 
 int main()
 {
-	vector<string> menuItems{"Insert", "Remove", "Get size", "Get value", "Show all"};
+	vector<string> menuItems{"Insert/Change", "Remove", "Get size", "Get value", "Show all"};
 	vector<void (*)(HashTable::StringHashTable&)> funcs{ &insert, &remove, &getSize, &getValue, &showAll };
 
 	ConsoleMenu::ConsoleMenu<HashTable::StringHashTable&> menu(menuItems, funcs);
@@ -30,7 +30,12 @@ void insert(HashTable::StringHashTable& table)
 	cin >> phoneNumber;
 	cout << "Address - ";
 	cin >> address;
+
+	bool isRecordExists = table.exists(phoneNumber);
 	table.insert({ phoneNumber, address });
+	isRecordExists ?
+		cout << "Record changed successfully!" << endl :
+		cout << "Record inserted successfully!" << endl;
 }
 
 void remove(HashTable::StringHashTable& table)
@@ -40,7 +45,7 @@ void remove(HashTable::StringHashTable& table)
 	cin >> phoneNumber;
 	table.remove(phoneNumber) ?
 		cout << "Record removed successfully!" << endl :
-		cout << "No such key in hashtable!" << endl;
+		cout << "No such phone number in hashtable!" << endl;
 }
 
 void getSize(HashTable::StringHashTable& table)
@@ -60,11 +65,12 @@ void getValue(HashTable::StringHashTable& table)
 		cout << "Address - " << record.address << endl;
 	}
 	else
-		cout << "No such key in hashtable!" << endl;
+		cout << "No such phone number in hashtable!" << endl;
 }
 
 void showAll(HashTable::StringHashTable& table)
 {
+	cout << "Table records:" << endl;
 	for (auto record : table)
 		cout << record.phoneNumber << " - " << record.address << endl;
 }

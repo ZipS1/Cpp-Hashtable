@@ -32,6 +32,7 @@ namespace ConsoleMenu
 		{
 			while (true)
 			{
+				std::cout << "// --- MENU --- //" << std::endl;
 				for (size_t i = 0; i < menuItems.size(); i++)
 					std::cout << i + 1 << " - " << menuItems[i] << std::endl;
 				size_t choice = getChoice();

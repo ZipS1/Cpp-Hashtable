@@ -62,8 +62,8 @@ namespace HashTable
 		bool remove(std::string const& key);
 		bool exists(std::string const& key);
 		Record getValue(std::string const& key);
-		size_t getSize() { return size; }
-		size_t getCapacity() { return capacity; }
+		size_t getSize() const { return size; }
+		size_t getCapacity() const { return capacity; }
 		~StringHashTable();
 
 		Record operator[](std::string const& key) { return getValue(key); }
@@ -73,16 +73,17 @@ namespace HashTable
 			<std::input_iterator_tag, HashNode, int, const Record*, Record>
 		{
 		public:
-			iterator(HashNode** table, size_t index) : table(const_cast<const HashNode**>(table)), index(index) {}
+			iterator(HashNode** const table, size_t const capacity, size_t index) :
+				table(table), index(index), capacity(capacity) {}
 			iterator& operator++() 
 			{
-				for (index++; table[index] == nullptr; index++);
+				for (index++; table[index] == nullptr && index != capacity; index++);
 				return *this;
 			}
 			iterator operator++(int) 
 			{
 				auto retval = *this;
-				for (index++; table[index] == nullptr; index++);
+				for (index++; table[index] == nullptr && index != capacity; index++);
 				return retval;
 			}
 			bool operator==(iterator other) const { return this->index == other.index; }
@@ -91,8 +92,10 @@ namespace HashTable
 			pointer operator->() const { return &table[index]->record; }
 
 		private:
-			const HashNode** table;
+			HashNode** const table;
+			size_t const capacity;
 			size_t index;
+			
 		};
 #pragma endregion
 		iterator begin();

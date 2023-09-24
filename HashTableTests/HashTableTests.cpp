@@ -15,7 +15,6 @@ namespace Microsoft {
 				std::wstring wstr(outString.begin(), outString.end());
 				return wstr;
 			}
-
 		}
 	}
 }
@@ -893,12 +892,16 @@ namespace HashTableTests
 			table.insert(expectedRecord);
 			table.insert(record2);
 			table.insert(record3);
+			size_t expectedSize = 3;
+			size_t expectedCapacity = 100;
 
 			// Act
 			auto it = table.begin();
 
 			// Assert
 			Assert::AreEqual(expectedRecord, *it);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(IteratorSecondElement)
@@ -911,6 +914,8 @@ namespace HashTableTests
 			table.insert(record1);
 			table.insert(expectedRecord);
 			table.insert(record3);
+			size_t expectedSize = 3;
+			size_t expectedCapacity = 100;
 
 			// Act
 			auto it = table.begin();
@@ -918,6 +923,8 @@ namespace HashTableTests
 
 			// Assert
 			Assert::AreEqual(expectedRecord, *it);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(IteratorMiddleElement)
@@ -927,9 +934,9 @@ namespace HashTableTests
 			HashTable::Record record1{ "1", "adr1" };
 			HashTable::Record record2{ "2", "adr2" };
 			HashTable::Record record3{ "3", "adr3" };
-			HashTable::Record expectedRecord{ "3", "adr4" };
-			HashTable::Record record5{ "3", "adr5" };
-			HashTable::Record record6{ "3", "adr6" };
+			HashTable::Record expectedRecord{ "4", "adr4" };
+			HashTable::Record record5{ "5", "adr5" };
+			HashTable::Record record6{ "6", "adr6" };
 			table.insert(record1);
 			table.insert(record2);
 			table.insert(record3);
@@ -937,6 +944,8 @@ namespace HashTableTests
 			table.insert(record5);
 			table.insert(record6);
 			size_t forwardAmount = 3;
+			size_t expectedSize = 6;
+			size_t expectedCapacity = 100;
 
 			// Act
 			auto it = table.begin();
@@ -945,6 +954,8 @@ namespace HashTableTests
 
 			// Assert
 			Assert::AreEqual(expectedRecord, *it);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(IteratorLastElement)
@@ -957,6 +968,8 @@ namespace HashTableTests
 			table.insert(record1);
 			table.insert(record2);
 			table.insert(expectedRecord);
+			size_t expectedSize = 3;
+			size_t expectedCapacity = 100;
 
 			// Act
 			HashTable::Record record;
@@ -965,6 +978,8 @@ namespace HashTableTests
 
 			// Assert
 			Assert::AreEqual(expectedRecord, record);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
 		TEST_METHOD(IteratorForLoop)
@@ -1015,6 +1030,21 @@ namespace HashTableTests
 
 			// Assert
 			Assert::AreEqual(expectedCounter, actualCounter);
+		}
+
+		TEST_METHOD(IteratorEmptyHashTable)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			size_t expectedSize = 0;
+			size_t expectedCapacity = 100;
+
+			// Act
+
+			// Assert
+			Assert::IsTrue(table.begin() == table.end());
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 	};
 }

@@ -1,8 +1,8 @@
 #include "pch.h"
 using namespace std;
 
-ConsoleMenu::ConsoleMenu::ConsoleMenu(std::vector<std::string> const& menuItems) :
-	menuItems(menuItems)
+ConsoleMenu::ConsoleMenu::ConsoleMenu(std::vector<std::string> const& menuItems, vector<void (*)()> funcs) :
+	menuItems(menuItems), funcs(funcs)
 {
 	const_cast<vector<std::string>&>(this->menuItems).push_back("Exit");
 }
@@ -16,6 +16,9 @@ void ConsoleMenu::ConsoleMenu::run()
 		size_t choice = getChoice();
 		if (choice == menuItems.size())
 			return;
+
+		funcs[choice - 1]();
+		cout << endl;
 	}	
 }
 

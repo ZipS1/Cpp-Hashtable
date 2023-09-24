@@ -1,11 +1,12 @@
 #include <iostream>
 #include "hash-table.h"
+#include "console-menu.h"
 
 int main()
 {
-	HashTable::StringHashTable table;
-	std::cout << table.getSize() << std::endl;
-	std::cout << std::boolalpha << (table.begin() == table.end()) << std::endl;
-	std::cout << table.getSize() << std::endl;
+	std::vector<std::string> menuItems{ "Insert", "Remove", "Get Value", "Show all" };
+	ConsoleMenu::ConsoleMenu menu(menuItems);
+
+	menu.run();
 
 }

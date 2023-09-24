@@ -55,7 +55,7 @@ HashTable::StringHashTable::~StringHashTable()
 HashTable::StringHashTable::iterator HashTable::StringHashTable::begin()
 {
 	size_t i;
-	for (i = 0; i < capacity && table[i] == nullptr; i++);
+	for (i = 0; i < capacity && isIndexExists(i) == false; i++);
 	return iterator(table, capacity, i);
 }
 

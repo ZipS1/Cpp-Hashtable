@@ -1047,7 +1047,33 @@ namespace HashTableTests
 			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
 
-		TEST_METHOD(IteratorAfterRemove)
+		TEST_METHOD(IteratorAfterRemoveFirst)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "1", "adr1" };
+			HashTable::Record record2{ "2", "adr2" };
+			HashTable::Record record3{ "3", "adr3" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(record3);
+			size_t expectedCounter = 2;
+			size_t expectedSize = 2;
+			size_t expectedCapacity = 100;
+
+			// Act
+			table.remove(record1.phoneNumber);
+			size_t actualCounter = 0;
+			for (auto record : table)
+				actualCounter++;
+
+			// Assert
+			Assert::AreEqual(expectedCounter, actualCounter);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
+		}
+
+		TEST_METHOD(IteratorAfterRemoveMiddle)
 		{
 			// Arrange
 			HashTable::StringHashTable table;
@@ -1063,6 +1089,32 @@ namespace HashTableTests
 
 			// Act
 			table.remove(record2.phoneNumber);
+			size_t actualCounter = 0;
+			for (auto record : table)
+				actualCounter++;
+
+			// Assert
+			Assert::AreEqual(expectedCounter, actualCounter);
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
+		}
+
+		TEST_METHOD(IteratorAfterRemoveLast)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record record1{ "1", "adr1" };
+			HashTable::Record record2{ "2", "adr2" };
+			HashTable::Record record3{ "3", "adr3" };
+			table.insert(record1);
+			table.insert(record2);
+			table.insert(record3);
+			size_t expectedCounter = 2;
+			size_t expectedSize = 2;
+			size_t expectedCapacity = 100;
+
+			// Act
+			table.remove(record3.phoneNumber);
 			size_t actualCounter = 0;
 			for (auto record : table)
 				actualCounter++;

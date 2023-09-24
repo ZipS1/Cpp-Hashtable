@@ -113,7 +113,6 @@ namespace HashTable
 		IndexSearchResult findIndex(std::string const& key);
 		IndexSearchResult findEmptyIndex(std::string const& key);
 		bool isIndexExists(size_t const index);
-		bool isIndexEmpty(size_t const index);
 
 		size_t getHash(std::string const& key, size_t const& i);
 		size_t getAsciiSum(std::string str);

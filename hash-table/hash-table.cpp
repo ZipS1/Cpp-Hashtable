@@ -103,7 +103,7 @@ HashTable::IndexSearchResult HashTable::StringHashTable::findEmptyIndex(std::str
 	for (int i = 0; i < capacity; i++)
 	{
 		size_t hash = getHash(key, i);
-		if (isIndexEmpty(hash))
+		if (isIndexExists(hash) == false)
 			return { true, hash };
 	}
 	return { false, 0 };
@@ -111,18 +111,7 @@ HashTable::IndexSearchResult HashTable::StringHashTable::findEmptyIndex(std::str
 
 bool HashTable::StringHashTable::isIndexExists(size_t const index)
 {
-	if (table[index] == nullptr)
-		return false;
-
-	if (table[index]->status == NodeStatus::Deleted)
-		return false;
-
-	return true;
-}
-
-bool HashTable::StringHashTable::isIndexEmpty(size_t const index)
-{
-	return table[index] == nullptr || table[index]->status == NodeStatus::Deleted;
+	return table[index] != nullptr && table[index]->status != NodeStatus::Deleted;
 }
 
 size_t HashTable::StringHashTable::getHash(std::string const& key, size_t const& i)

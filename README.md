@@ -1,2 +1,2 @@
 # Cpp-HashTable
-Cpp HashTable implementation with open addressing
+Cpp HashTable with open addressing implementation 

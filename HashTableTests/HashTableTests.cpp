@@ -352,6 +352,26 @@ namespace HashTableTests
 			Assert::AreEqual(expectedSize, table.getSize());
 			Assert::AreEqual(expectedCapacity, table.getCapacity());
 		}
+
+		TEST_METHOD(SameHashInsertion)
+		{
+			// Arrange
+			HashTable::StringHashTable table;
+			HashTable::Record expectedRecord1{ "aaa", "adr1" };
+			HashTable::Record expectedRecord2{ "baa", "adr1" };
+			size_t expectedSize = 2;
+			size_t expectedCapacity = 100;
+
+			// Act
+			table.insert(expectedRecord1);
+			table.insert(expectedRecord2);
+
+			// Assert
+			Assert::AreEqual(expectedRecord1, table.getValue(expectedRecord1.phoneNumber));
+			Assert::AreEqual(expectedRecord2, table.getValue(expectedRecord2.phoneNumber));
+			Assert::AreEqual(expectedSize, table.getSize());
+			Assert::AreEqual(expectedCapacity, table.getCapacity());
+		}
 	};
 
 	TEST_CLASS(RemovalTests)

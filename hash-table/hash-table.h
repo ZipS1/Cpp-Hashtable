@@ -53,7 +53,6 @@ namespace HashTable
 		size_t index;
 	};
 
-	// make iterable table
 	class StringHashTable
 	{
 	public:

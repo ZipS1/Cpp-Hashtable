@@ -1,0 +1,50 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: UnitTests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+  TESTS_PROJECT_NAME: Tests
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  run-msbuild-tests:
+    runs-on: windows-latest
+    name: Run MSBuild and tests
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      id: checkout_code
+  
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+      id: setup_msbuild
+  
+    - name: Build
+      id: run_msbuild
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      
+    - name: Setup VSTest and add to PATH
+      uses: darenm/Setup-VSTest@v1
+      id: setup_vstest
+
+    - name: Run VSTest
+      id: run_vstest
+      working-directory: $\x64\${{env.BUILD_CONFIGURATION}}\
+      run: vstest.console.exe /Platform:x64 .\${{env.TESTS_PROJECT_NAME}}.dll

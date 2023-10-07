@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: UnitTests
+name: Tests
 
 on:
   push:
@@ -46,5 +46,5 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: $\x64\${{env.BUILD_CONFIGURATION}}\
-      run: vstest.console.exe /Platform:x64 .\${{env.TESTS_PROJECT_NAME}}.dll
+      working-directory: ${{env.GITHUB_WORKSPACE}}\x64\${{env.BUILD_CONFIGURATION}}\
+      run: vstest.console.exe .\${{env.TESTS_PROJECT_NAME}}.dll

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "hash-table.h"
-#include "console-menu.h"
+#include "..\hash-table\hash-table.h"
+#include "..\console-menu\console-menu.h"
 using namespace std;
 
 #pragma region FuncDeclarations
